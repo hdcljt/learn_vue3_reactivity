@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试 Reactivity</title>
+    <style>
+        header {
+            user-select: none;
+        }
+
+        main {
+            display: flex;
+        }
+
+        fieldset {
+            flex: 1;
+        }
+
+        section {
+            display: grid;
+            grid: auto-flow / repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        button {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <input type="radio" name="import" id="official" value="official" checked>
+        <label for="official">vue3.0/reactivity(官方实现)</label>
+        <input type="radio" name="import" id="custom" value="custom">
+        <label for="custom">custom/reactivity(简化)</label>
+    </header>
+    <hr>
+    <main>
+        <fieldset>
+            <legend>reactive</legend>
+            <button id="ita0">执行全部</button>
+            <hr>
+            <section>
+                <button id="ita1" title="代理对象">Object</button>
+                <button id="ita2" title="代理对象不影响原型（官方用例是存在问题的）" disabled>proto</button>
+                <button id="ita3" title="嵌套代理对象（自身的对象属性也会代理）">nested reactives</button>
+                <button id="ita4" title="Map, Set的子类型也会被代理" disabled>observing subtypes of IterableCollections(Map, Set)</button>
+                <button id="ita5" title="WeakMap, WeakSet的子类型也会被代理" disabled>observing subtypes of WeakCollections(WeakMap, WeakSet)</button>
+                <button id="ita6" title="代理对象值的变化会反射到原始对象上">observed value should proxy mutations to original (Object)</button>
+                <button id="ita7" title="代理对象可以观察到动态属性的变化">setting a property with an unobserved value should wrap with reactive</button>
+                <button id="ita8" title="观察已被代理的对象会返回相同的代理">observing already observed value should return same Proxy</button>
+                <button id="ita9" title="多次观察同一个原始对象会返回相同的代理">observing the same value multiple times should return same Proxy</button>
+                <button id="ita10" title="代理不会污染原始对象（嵌套代理的对象反射到原始对象上也是对应的原始类型）">should not pollute original object with Proxies</button>
+                <button id="ita11" title="toRaw返回被代理的原始对象">toRaw</button>
+                <button id="ita12" title="以代理对象作为原型的对象和被代理的原始对象是不同的">toRaw on object using reactive as prototype</button>
+                <button id="ita13" title="官方用例是存在问题的" disabled>should not unwrap Ref<T></button>
+                <button id="ita14" title="reactive会对computed ref自动解包">should unwrap computed refs</button>
+                <button id="ita15" title="代理对象的属性可以设置为ref且可以重新赋值" disabled>should allow setting property from a ref to another ref</button>
+                <button id="ita16" title="不会被代理的类型">non-observable values</button>
+                <button id="ita17" title="markRaw标记对象不使用代理">markRaw</button>
+                <button id="ita18" title="不可扩展的对象（被seal，freeze和preventExtensions方法处理后的对象）不会被代理">should not observe non-extensible objects</button>
+                <button id="ita19" title="带有__v_skip属性的对象不会被代理">should not observe objects with __v_skip</button>
+            </section>
+        </fieldset>
+        <fieldset>
+            <legend>reactive(array)</legend>
+            <button id="itb0">执行全部</button>
+            <hr>
+            <section>
+                <button id="itb1" title="代理数组">should make Array reactive</button>
+                <button id="itb2" title="拷贝的代理数组引用观察的值">cloned reactive Array should point to observed values</button>
+                <button id="itb3" title="代理数组值的变化会反射到原始数组上">observed value should proxy mutations to original (Array)</button>
+                <button id="itb4" title="代理数组的includes/indexOf/lastIndexOf方法可以使用原始值">Array identity methods should work with raw values</button>
+                <button id="itb5" title="代理数组的includes/indexOf/lastIndexOf方法可以使用原始值（代理对象）">Array identity methods should work if raw value contains reactive objects</button>
+                <button id="itb6" title="代理数组的includes/indexOf/lastIndexOf方法可以触发响应式">Array identity methods should be reactive</button>
+                <button id="itb7" title="代理数组delete不触发length属性的依赖函数">delete on Array should not trigger length dependency</button>
+                <button id="itb8" title="代理数组已有索引的值变化不触发length属性的依赖函数（length变化才触发）">add existing index on Array should not trigger length dependency</button>
+                <button id="itb9" title="代理数组添加非整型的属性不触发length属性的依赖函数">add non-integer prop on Array should not trigger length dependency</button>
+                <button id="itb10" title="">[Array methods w/ refs] read only copy methods</button>
+                <button id="itb11" title="">[Array methods w/ refs] read + write mutating methods</button>
+                <button id="itb12" title="">[Array methods w/ refs] read + identity</button>
+            </section>
+        </fieldset>
+        <fieldset>
+            <legend>effect</legend>
+            <button id="itc0">执行全部</button>
+            <hr>
+            <section>
+                <button id="itc1" title="传递的（由effect包装的）函数会立即执行一次">should run the passed function once (wrapped by a effect)</button>
+                <button id="itc2" title="跟踪基本属性">should observe basic properties</button>
+                <button id="itc3" title="跟踪多个属性">should observe multiple properties</button>
+                <button id="itc4" title="属性被多个effect回调依赖">should handle multiple effects</button>
+                <button id="itc5" title="跟踪嵌套属性">should observe nested properties</button>
+                <button id="itc6" title="跟踪删除属性">should observe delete operations</button>
+                <button id="itc7" title="跟踪in操作符">should observe has operations</button>
+                <button id="itc8" title="跟踪原型链属性">should observe properties on the prototype chain</button>
+                <button id="itc9" title="跟踪in操作符（原型链）">should observe has operations on the prototype chain</button>
+                <button id="itc10" title="跟踪继承的属性访问器">should observe inherited property accessors</button>
+                <button id="itc11" title="跟踪函数调用链">should observe function call chains</button>
+                <button id="itc12" title="跟踪迭代器">should observe iteration</button>
+                <button id="itc13" title="跟踪数组隐式的长度变化">should observe implicit array length changes</button>
+                <button id="itc14" title="跟踪稀疏数组的变化">should observe sparse array mutations</button>
+                <button id="itc15" title="跟踪可枚举属性">should observe enumeration</button>
+                <button id="itc16" title="跟踪Symbol作为键的属性">should observe symbol keyed properties</button>
+                <button id="itc17" title="不跟踪已知的Symbol键控属性">should not observe well-known symbol keyed properties</button>
+                <button id="itc18" title="跟踪函数值属性">should observe function valued properties</button>
+                <button id="itc19" title="跟踪链式依赖的访问器">should observe chained getters relying on this</button>
+                <button id="itc20" title="跟踪链式依赖的方法">should observe methods relying on this</button>
+                <button id="itc21" title="没有值变化时不跟踪set操作">should not observe set operations without a value change</button>
+                <button id="itc22" title="不跟踪原始对象的改变">should not observe raw mutations</button>
+                <button id="itc23" title="原始值的改变不触发更新">should not be triggered by raw mutations</button>
+                <button id="itc24" title="继承的原setter不触发更新">should not be triggered by inherited raw setters</button>
+                <button id="itc25" title="避免隐式的无限递归循环">should avoid implicit infinite recursive loops with itself</button>
+                <button id="itc26" title="可以显示的递归原函数循环">should allow explicitly recursive raw function loops</button>
+                <button id="itc27" title="避免其他effect引起的无线循环">should avoid infinite loops with other effects</button>
+                <button id="itc28" title="回调函数返回新的响应式effect">should return a new reactive version of the function</button>
+                <button id="itc29" title="运行时自动触发条件分支">should discover new branches while running automatically</button>
+                <button id="itc30" title="手动运行时触发条件分支">should discover new branches when running manually</button>
+                <button id="itc31" title="非活动分支中的属性改变不触发更新">should not be triggered by mutating a property, which is used in an inactive branch</button>
+                <button id="itc32" title="传递的函数是个effect则重新包装">should not double wrap if the passed function is a effect</button>
+                <button id="itc33" title="单个属性的变化只运行一次effect回调">should not run multiple times for a single mutation</button>
+                <button id="itc34" title="可以嵌套effect">should allow nested effects</button>
+                <button id="itc35" title="跟踪JSON方法">should observe json methods</button>
+                <button id="itc36" title="跟踪类方法的调用">should observe class method invocations</button>
+                <button id="itc37" title="延迟执行">lazy</button>
+                <button id="itc38" title="调度函数">scheduler</button>
+                <button id="itc39" title="依赖收集">events: onTrack</button>
+                <button id="itc40" title="触发更新">events: onTrigger</button>
+                <button id="itc41" title="停止侦听">stop</button>
+                <button id="itc42" title="停止调度程序">stop with scheduler</button>
+                <button id="itc43" title="停止事件">events: onStop</button>
+                <button id="itc44" title="停止事件嵌套">stop: a stopped effect is nested in a normal effect</button>
+                <button id="itc45" title="标记跳过代理">markRaw</button>
+                <button id="itc46" title="当新旧值都为NaN时不触发更新">should not be trigger when the value and the old value both are NaN</button>
+                <button id="itc47" title="当数组长度设置为0时触发更新">should trigger all effects when array length is set to 0</button>
+            </section>
+        </fieldset>
+        <fieldset>
+            <legend>computed</legend>
+            <button id="itd0">执行全部</button>
+            <hr>
+            <section>
+                <button id="itd1" title="返回更新后的值">should return updated value</button>
+                <button id="itd2" title="延迟计算">should compute lazily</button>
+                <button id="itd3" title="触发effect">should trigger effect</button>
+                <button id="itd4" title="链式引用">should work when chained</button>
+                <button id="itd5" title="链式触发">should trigger effect when chained</button>
+                <button id="itd6" title="混合调用">should trigger effect when chained (mixed invocations)</button>
+                <button id="itd7" title="停止计算后不再触发更新">should no longer update when stopped</button>
+                <button id="itd8" title="支持setter">should support setter</button>
+                <button id="itd9" title="setter触发effect">should trigger effect w/ setter</button>
+                <button id="itd10" title="只读的computed不能设值">should warn if trying to set a readonly computed</button>
+                <button id="itd11" title="是否只读">should be readonly</button>
+            </section>
+        </fieldset>
+    </main>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
