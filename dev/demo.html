@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: x-large;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <label>Range 1:<input type="range" min="0" max="100" id="r1"></label>
+    <label>Range 2:<input type="range" min="0" max="100" id="r2"></label>
+    <div id="text"></div>
+    <script type="module">
+        import { reactive, effect } from './reactivity-v1-basic.js'
+        const obj = reactive({ r: 20 })
+        effect(() => {
+            r1.value = obj.r
+            text.innerHTML = obj.r
+        })
+        r1.oninput = () => {
+            obj.r = r1.value
+        }
+        r2.oninput = () => {
+            obj.r = r2.value
+        }
+    </script>
+</body>
+
+</html>

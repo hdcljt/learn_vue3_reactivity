@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rbg {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            place-items: center;
+        }
+
+        #color {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="rbg">
+        <label for="r">R</label>
+        <input type="range" min="0" max="255" id="r">
+        <label for="g">G</label>
+        <input type="range" min="0" max="255" id="g">
+        <label for="b">B</label>
+        <input type="range" min="0" max="255" id="b">
+    </div>
+    <div id="color"></div>
+    <div id="text"></div>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
