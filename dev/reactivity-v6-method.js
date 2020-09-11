@@ -229,12 +229,10 @@ function trigger(target, key, type, newValue) {
             add(deps) // key === 'length' || index >= newLength
         })
     } else {
+        add(depsMap.get(key))
         if (type === TriggerOpTypes.ADD) {
             // 新增（没有指定键的依赖，数组查找length，对象查找ITERATE_KEY）
             add(depsMap.get(isArray(target) ? 'length' : ITERATE_KEY))
-        } else {
-            // 修改
-            add(depsMap.get(key))
         }
     }
 
