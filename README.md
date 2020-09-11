@@ -647,7 +647,7 @@ function trigger(target, key, type, newValue) {
 + export const ITERATE_KEY = Symbol('iterate')
 ```
 
-## 文档
+## 参考文献
 
 -   [Proxy | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy 'https://developer.mozilla.org/.../Proxy')
 -   [Reflect | MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Reflect 'https://developer.mozilla.org/.../Reflect')
