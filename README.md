@@ -91,7 +91,7 @@ new Proxy(target, {
 
 ## 实现简单的响应式系统
 
-> 基于 `vue@3.0.0-rc.10` 版本的简化
+> 基于 `vue@3.0.0-rc.10` 版本的简化，[代码仓库在此](https://github.com/hdcljt/learn_vue3_reactivity.git "代码仓库")
 
 ### 最基础的响应式
 
